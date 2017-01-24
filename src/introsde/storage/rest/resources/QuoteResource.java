@@ -45,7 +45,7 @@ public class QuoteResource {
 	ObjectMapper mapper = new ObjectMapper();
 	
 	// Definition of some useful constants
-	final String baseUrl = "http://quote-adapter-service-ar.herokuapp.com/rest/quotelicious/random";
+	final String baseUrl = "http://quote-adapter-service.herokuapp.com/rest/quotelicious/random";
 	
 	public QuoteResource() {
 		try {
@@ -59,7 +59,7 @@ public class QuoteResource {
 	}
 	
 	/***
-	 * A method that returns a random motivational quote from the external adapter service
+	 * A method that returns a random motivational quote from the external adapter service.
 	 * @return a random quote
 	 */
 	@GET
@@ -67,13 +67,16 @@ public class QuoteResource {
 	public Quote getQuote() {
 		Quote quote = null;
 		
+		// Send the request and get the relative response
 		Response response = webTarget.request().accept(MediaType.APPLICATION_JSON).get(Response.class);
 		int statusCode = response.getStatus();
 		
+		// Check the HTTP status code
 		if (statusCode==200) {
 			try {
 				JsonNode root = mapper.readTree(response.readEntity(String.class));
 				
+				// Set the attributes of the quote
 				quote = new Quote();
 				quote.setText(root.path("text").asText());
 				quote.setAuthor(root.path("author").asText());

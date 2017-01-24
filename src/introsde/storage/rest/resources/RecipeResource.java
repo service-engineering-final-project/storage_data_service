@@ -6,6 +6,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -47,7 +48,7 @@ public class RecipeResource {
 	ObjectMapper mapper = new ObjectMapper();
 	
 	// Definition of some useful constants
-	final String baseUrl = "http://recipe-adapter-service-ar.herokuapp.com/rest/yummly";
+	final String baseUrl = "http://recipe-adapter-service.herokuapp.com/rest/yummly";
 	
 	public RecipeResource() {
 		try {
@@ -61,8 +62,10 @@ public class RecipeResource {
 	}
 	
 	/***
-	 * A method that returns a random recipe from the external adapter service
-	 * @return a random recipe
+	 * A method that returns a recipe (from the external adapter service) 
+	 * with a particular ID given as parameter.
+	 * @param id: the univocal identifier of the recipe
+	 * @return the recipe having that very identifier
 	 */
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
@@ -70,13 +73,16 @@ public class RecipeResource {
 	public RecipeNutritionFacts getRecipe(@PathParam("id") String id) {
 		RecipeNutritionFacts recipe = null;
 		
+		// Send the request and get the relative response
 		Response response = webTarget.path(id).request().accept(MediaType.APPLICATION_JSON).get(Response.class);
 		int statusCode = response.getStatus();
 		
+		// Check the HTTP status code
 		if (statusCode==200) {
 			try {
 				JsonNode root = mapper.readTree(response.readEntity(String.class));
 				
+				// Set the attributes of the recipe
 				recipe = new RecipeNutritionFacts();
 				recipe.setId(root.path("id").asText());
 				recipe.setName(root.path("name").asText());
@@ -103,39 +109,55 @@ public class RecipeResource {
 	}
 	
 	/***
-	 * A method that returns a random recipe from the external adapter service
-	 * @return a random recipe
+	 * A method that returns a random recipe (from the external adapter service) 
+	 * from a list of recipes according to some input parameters.
+	 * @param keyword: a keyword to filter results
+	 * @param minKcal: the minimum amount of kilocalories
+	 * @param maxKcal: the maximum amount of kilocalories
+	 * @param course: the kind of plate
+	 * @param allergy: a (non-mandatory) allergy
+	 * @return a random recipe from a list of recipes respecting the input conditions
 	 */
-	/*
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public RecipeNutritionFacts getRandomRecipe() {
-		RecipeNutritionFacts recipe = null;
+	public Recipe getRandomRecipe(
+			@QueryParam("keyword") String keyword,
+			@QueryParam("minKcal") int minKcal,
+			@QueryParam("maxKcal") int maxKcal,
+			@QueryParam("course") String course,
+			@QueryParam("allergy") String allergy
+	) {
+		Recipe recipe = null;
 		
-		webTarget += "/random ...";
+		// Set the base target with the static values
+		WebTarget fullWebTarget = webTarget.path("random");
 		
-		Response response = webTarget.request().accept(MediaType.APPLICATION_JSON).get(Response.class);
+		// Extend the base target with parameters given as input
+		if (keyword != null) fullWebTarget = fullWebTarget.queryParam("keyword", keyword);
+		if (minKcal != 0) fullWebTarget = fullWebTarget.queryParam("minKcal", minKcal);
+		if (maxKcal != 0) fullWebTarget = fullWebTarget.queryParam("maxKcal", maxKcal);
+		if (course != null) fullWebTarget = fullWebTarget.queryParam("course", course);
+		if (allergy != null) fullWebTarget = fullWebTarget.queryParam("allergy", allergy);
+				
+		// Print the complete path performed on Yummly API
+		// System.out.println(fullWebTarget.toString());
+		
+		// Send the request and get the relative response
+		Response response = fullWebTarget.request().accept(MediaType.APPLICATION_JSON).get(Response.class);
 		int statusCode = response.getStatus();
 		
+		// Check the HTTP status code
 		if (statusCode==200) {
 			try {
 				JsonNode root = mapper.readTree(response.readEntity(String.class));
 				
-				recipe = new RecipeNutritionFacts();
+				// Set the attributes of the recipe
+				recipe = new Recipe();
 				recipe.setId(root.path("id").asText());
 				recipe.setName(root.path("name").asText());
 				recipe.setImage(root.path("image").asText());
-				recipe.setWebsiteUrl(root.path("websiteUrl").asText());
-				recipe.setProteins(root.path("proteins").asDouble());
-				recipe.setCarbohydrates(root.path("carbohydrates").asDouble());
-				recipe.setLipids(root.path("lipids").asDouble());
-				recipe.setSaturatedLipids(root.path("saturatedLipids").asDouble());
-				recipe.setCalories(root.path("calories").asDouble());
-				recipe.setSodium(root.path("sodium").asDouble());
-				recipe.setPotassium(root.path("potassium").asDouble());
-				recipe.setCalcium(root.path("calcium").asDouble());
-				recipe.setStarch(root.path("starch").asDouble());
-				recipe.setFiber(root.path("fiber").asDouble());
+				recipe.setDetails("https://storage-data-service-ar.herokuapp.com/rest/recipe/" + root.path("id").asText());
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -145,5 +167,4 @@ public class RecipeResource {
 		
 		return recipe;
 	}
-	*/
 }
