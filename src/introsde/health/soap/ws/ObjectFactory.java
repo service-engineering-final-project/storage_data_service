@@ -44,20 +44,26 @@ public class ObjectFactory {
     private final static QName _SavePersonMeasure_QNAME = new QName("http://ws.soap.health.introsde/", "savePersonMeasure");
     private final static QName _SavePersonMeasureResponse_QNAME = new QName("http://ws.soap.health.introsde/", "savePersonMeasureResponse");
     private final static QName _CreatePerson_QNAME = new QName("http://ws.soap.health.introsde/", "createPerson");
+    private final static QName _ReadPersonGoalByNameResponse_QNAME = new QName("http://ws.soap.health.introsde/", "readPersonGoalByNameResponse");
     private final static QName _UpdateGoal_QNAME = new QName("http://ws.soap.health.introsde/", "updateGoal");
     private final static QName _ReadMeasureTypes_QNAME = new QName("http://ws.soap.health.introsde/", "readMeasureTypes");
     private final static QName _UpdatePersonMeasure_QNAME = new QName("http://ws.soap.health.introsde/", "updatePersonMeasure");
+    private final static QName _ReadPersonGoalListResponse_QNAME = new QName("http://ws.soap.health.introsde/", "readPersonGoalListResponse");
     private final static QName _ReadPersonListResponse_QNAME = new QName("http://ws.soap.health.introsde/", "readPersonListResponse");
     private final static QName _DeletePersonResponse_QNAME = new QName("http://ws.soap.health.introsde/", "deletePersonResponse");
     private final static QName _UpdatePersonMeasureResponse_QNAME = new QName("http://ws.soap.health.introsde/", "updatePersonMeasureResponse");
     private final static QName _ReadPersonList_QNAME = new QName("http://ws.soap.health.introsde/", "readPersonList");
     private final static QName _InitializeDatabase_QNAME = new QName("http://ws.soap.health.introsde/", "initializeDatabase");
     private final static QName _ReadGoalResponse_QNAME = new QName("http://ws.soap.health.introsde/", "readGoalResponse");
+    private final static QName _ReadPersonGoalById_QNAME = new QName("http://ws.soap.health.introsde/", "readPersonGoalById");
     private final static QName _DeleteGoalResponse_QNAME = new QName("http://ws.soap.health.introsde/", "deleteGoalResponse");
     private final static QName _ReadMeasureTypesResponse_QNAME = new QName("http://ws.soap.health.introsde/", "readMeasureTypesResponse");
+    private final static QName _ReadPersonGoalByIdResponse_QNAME = new QName("http://ws.soap.health.introsde/", "readPersonGoalByIdResponse");
     private final static QName _ReadGoalListResponse_QNAME = new QName("http://ws.soap.health.introsde/", "readGoalListResponse");
+    private final static QName _ReadPersonGoalByName_QNAME = new QName("http://ws.soap.health.introsde/", "readPersonGoalByName");
     private final static QName _InitializeDatabaseResponse_QNAME = new QName("http://ws.soap.health.introsde/", "initializeDatabaseResponse");
     private final static QName _ReadGoal_QNAME = new QName("http://ws.soap.health.introsde/", "readGoal");
+    private final static QName _ReadPersonGoalList_QNAME = new QName("http://ws.soap.health.introsde/", "readPersonGoalList");
     private final static QName _ReadGoalList_QNAME = new QName("http://ws.soap.health.introsde/", "readGoalList");
 
     /**
@@ -92,11 +98,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ReadPersonGoalByIdResponse }
+     * 
+     */
+    public ReadPersonGoalByIdResponse createReadPersonGoalByIdResponse() {
+        return new ReadPersonGoalByIdResponse();
+    }
+
+    /**
      * Create an instance of {@link ReadGoalListResponse }
      * 
      */
     public ReadGoalListResponse createReadGoalListResponse() {
         return new ReadGoalListResponse();
+    }
+
+    /**
+     * Create an instance of {@link ReadPersonGoalByName }
+     * 
+     */
+    public ReadPersonGoalByName createReadPersonGoalByName() {
+        return new ReadPersonGoalByName();
     }
 
     /**
@@ -116,11 +138,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link ReadPersonGoalList }
+     * 
+     */
+    public ReadPersonGoalList createReadPersonGoalList() {
+        return new ReadPersonGoalList();
+    }
+
+    /**
      * Create an instance of {@link ReadGoalList }
      * 
      */
     public ReadGoalList createReadGoalList() {
         return new ReadGoalList();
+    }
+
+    /**
+     * Create an instance of {@link ReadPersonGoalListResponse }
+     * 
+     */
+    public ReadPersonGoalListResponse createReadPersonGoalListResponse() {
+        return new ReadPersonGoalListResponse();
     }
 
     /**
@@ -169,6 +207,14 @@ public class ObjectFactory {
      */
     public ReadGoalResponse createReadGoalResponse() {
         return new ReadGoalResponse();
+    }
+
+    /**
+     * Create an instance of {@link ReadPersonGoalById }
+     * 
+     */
+    public ReadPersonGoalById createReadPersonGoalById() {
+        return new ReadPersonGoalById();
     }
 
     /**
@@ -225,6 +271,14 @@ public class ObjectFactory {
      */
     public CreatePerson createCreatePerson() {
         return new CreatePerson();
+    }
+
+    /**
+     * Create an instance of {@link ReadPersonGoalByNameResponse }
+     * 
+     */
+    public ReadPersonGoalByNameResponse createReadPersonGoalByNameResponse() {
+        return new ReadPersonGoalByNameResponse();
     }
 
     /**
@@ -369,6 +423,14 @@ public class ObjectFactory {
      */
     public Person.HealthProfile createPersonHealthProfile() {
         return new Person.HealthProfile();
+    }
+
+    /**
+     * Create an instance of {@link Person.Goals }
+     * 
+     */
+    public Person.Goals createPersonGoals() {
+        return new Person.Goals();
     }
 
     /**
@@ -552,6 +614,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReadPersonGoalByNameResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.soap.health.introsde/", name = "readPersonGoalByNameResponse")
+    public JAXBElement<ReadPersonGoalByNameResponse> createReadPersonGoalByNameResponse(ReadPersonGoalByNameResponse value) {
+        return new JAXBElement<ReadPersonGoalByNameResponse>(_ReadPersonGoalByNameResponse_QNAME, ReadPersonGoalByNameResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link UpdateGoal }{@code >}}
      * 
      */
@@ -576,6 +647,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://ws.soap.health.introsde/", name = "updatePersonMeasure")
     public JAXBElement<UpdatePersonMeasure> createUpdatePersonMeasure(UpdatePersonMeasure value) {
         return new JAXBElement<UpdatePersonMeasure>(_UpdatePersonMeasure_QNAME, UpdatePersonMeasure.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReadPersonGoalListResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.soap.health.introsde/", name = "readPersonGoalListResponse")
+    public JAXBElement<ReadPersonGoalListResponse> createReadPersonGoalListResponse(ReadPersonGoalListResponse value) {
+        return new JAXBElement<ReadPersonGoalListResponse>(_ReadPersonGoalListResponse_QNAME, ReadPersonGoalListResponse.class, null, value);
     }
 
     /**
@@ -633,6 +713,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReadPersonGoalById }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.soap.health.introsde/", name = "readPersonGoalById")
+    public JAXBElement<ReadPersonGoalById> createReadPersonGoalById(ReadPersonGoalById value) {
+        return new JAXBElement<ReadPersonGoalById>(_ReadPersonGoalById_QNAME, ReadPersonGoalById.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link DeleteGoalResponse }{@code >}}
      * 
      */
@@ -651,12 +740,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReadPersonGoalByIdResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.soap.health.introsde/", name = "readPersonGoalByIdResponse")
+    public JAXBElement<ReadPersonGoalByIdResponse> createReadPersonGoalByIdResponse(ReadPersonGoalByIdResponse value) {
+        return new JAXBElement<ReadPersonGoalByIdResponse>(_ReadPersonGoalByIdResponse_QNAME, ReadPersonGoalByIdResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ReadGoalListResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://ws.soap.health.introsde/", name = "readGoalListResponse")
     public JAXBElement<ReadGoalListResponse> createReadGoalListResponse(ReadGoalListResponse value) {
         return new JAXBElement<ReadGoalListResponse>(_ReadGoalListResponse_QNAME, ReadGoalListResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReadPersonGoalByName }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.soap.health.introsde/", name = "readPersonGoalByName")
+    public JAXBElement<ReadPersonGoalByName> createReadPersonGoalByName(ReadPersonGoalByName value) {
+        return new JAXBElement<ReadPersonGoalByName>(_ReadPersonGoalByName_QNAME, ReadPersonGoalByName.class, null, value);
     }
 
     /**
@@ -675,6 +782,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://ws.soap.health.introsde/", name = "readGoal")
     public JAXBElement<ReadGoal> createReadGoal(ReadGoal value) {
         return new JAXBElement<ReadGoal>(_ReadGoal_QNAME, ReadGoal.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ReadPersonGoalList }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://ws.soap.health.introsde/", name = "readPersonGoalList")
+    public JAXBElement<ReadPersonGoalList> createReadPersonGoalList(ReadPersonGoalList value) {
+        return new JAXBElement<ReadPersonGoalList>(_ReadPersonGoalList_QNAME, ReadPersonGoalList.class, null, value);
     }
 
     /**

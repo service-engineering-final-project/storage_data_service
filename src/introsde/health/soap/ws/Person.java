@@ -34,6 +34,17 @@ import javax.xml.bind.annotation.XmlType;
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
+ *         &lt;element name="goals" minOccurs="0">
+ *           &lt;complexType>
+ *             &lt;complexContent>
+ *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                 &lt;sequence>
+ *                   &lt;element name="goal" type="{http://ws.soap.health.introsde/}goal" maxOccurs="unbounded" minOccurs="0"/>
+ *                 &lt;/sequence>
+ *               &lt;/restriction>
+ *             &lt;/complexContent>
+ *           &lt;/complexType>
+ *         &lt;/element>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -48,7 +59,8 @@ import javax.xml.bind.annotation.XmlType;
     "firstname",
     "lastname",
     "birthdate",
-    "healthProfile"
+    "healthProfile",
+    "goals"
 })
 public class Person {
 
@@ -58,6 +70,7 @@ public class Person {
     protected String birthdate;
     @XmlElement(name = "health_profile")
     protected Person.HealthProfile healthProfile;
+    protected Person.Goals goals;
 
     /**
      * Gets the value of the id property.
@@ -169,6 +182,89 @@ public class Person {
      */
     public void setHealthProfile(Person.HealthProfile value) {
         this.healthProfile = value;
+    }
+
+    /**
+     * Gets the value of the goals property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Person.Goals }
+     *     
+     */
+    public Person.Goals getGoals() {
+        return goals;
+    }
+
+    /**
+     * Sets the value of the goals property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Person.Goals }
+     *     
+     */
+    public void setGoals(Person.Goals value) {
+        this.goals = value;
+    }
+
+
+    /**
+     * <p>Java class for anonymous complex type.
+     * 
+     * <p>The following schema fragment specifies the expected content contained within this class.
+     * 
+     * <pre>
+     * &lt;complexType>
+     *   &lt;complexContent>
+     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *       &lt;sequence>
+     *         &lt;element name="goal" type="{http://ws.soap.health.introsde/}goal" maxOccurs="unbounded" minOccurs="0"/>
+     *       &lt;/sequence>
+     *     &lt;/restriction>
+     *   &lt;/complexContent>
+     * &lt;/complexType>
+     * </pre>
+     * 
+     * 
+     */
+    @XmlAccessorType(XmlAccessType.FIELD)
+    @XmlType(name = "", propOrder = {
+        "goal"
+    })
+    public static class Goals {
+
+        protected List<Goal> goal;
+
+        /**
+         * Gets the value of the goal property.
+         * 
+         * <p>
+         * This accessor method returns a reference to the live list,
+         * not a snapshot. Therefore any modification you make to the
+         * returned list will be present inside the JAXB object.
+         * This is why there is not a <CODE>set</CODE> method for the goal property.
+         * 
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getGoal().add(newItem);
+         * </pre>
+         * 
+         * 
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link Goal }
+         * 
+         * 
+         */
+        public List<Goal> getGoal() {
+            if (goal == null) {
+                goal = new ArrayList<Goal>();
+            }
+            return this.goal;
+        }
+
     }
 
 

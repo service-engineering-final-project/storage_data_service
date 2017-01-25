@@ -252,6 +252,57 @@ public interface People {
 
     /**
      * 
+     * @param id
+     * @return
+     *     returns java.util.List<introsde.health.soap.ws.Goal>
+     */
+    @WebMethod
+    @WebResult(name = "goal", targetNamespace = "")
+    @RequestWrapper(localName = "readPersonGoalList", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.ReadPersonGoalList")
+    @ResponseWrapper(localName = "readPersonGoalListResponse", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.ReadPersonGoalListResponse")
+    @Action(input = "http://ws.soap.health.introsde/People/readPersonGoalListRequest", output = "http://ws.soap.health.introsde/People/readPersonGoalListResponse")
+    public List<Goal> readPersonGoalList(
+        @WebParam(name = "id", targetNamespace = "")
+        Long id);
+
+    /**
+     * 
+     * @param gId
+     * @param id
+     * @return
+     *     returns introsde.health.soap.ws.Goal
+     */
+    @WebMethod
+    @WebResult(name = "goal", targetNamespace = "")
+    @RequestWrapper(localName = "readPersonGoalById", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.ReadPersonGoalById")
+    @ResponseWrapper(localName = "readPersonGoalByIdResponse", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.ReadPersonGoalByIdResponse")
+    @Action(input = "http://ws.soap.health.introsde/People/readPersonGoalByIdRequest", output = "http://ws.soap.health.introsde/People/readPersonGoalByIdResponse")
+    public Goal readPersonGoalById(
+        @WebParam(name = "id", targetNamespace = "")
+        Long id,
+        @WebParam(name = "gId", targetNamespace = "")
+        Long gId);
+
+    /**
+     * 
+     * @param id
+     * @param title
+     * @return
+     *     returns introsde.health.soap.ws.Goal
+     */
+    @WebMethod
+    @WebResult(name = "goal", targetNamespace = "")
+    @RequestWrapper(localName = "readPersonGoalByName", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.ReadPersonGoalByName")
+    @ResponseWrapper(localName = "readPersonGoalByNameResponse", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.ReadPersonGoalByNameResponse")
+    @Action(input = "http://ws.soap.health.introsde/People/readPersonGoalByNameRequest", output = "http://ws.soap.health.introsde/People/readPersonGoalByNameResponse")
+    public Goal readPersonGoalByName(
+        @WebParam(name = "id", targetNamespace = "")
+        Long id,
+        @WebParam(name = "title", targetNamespace = "")
+        String title);
+
+    /**
+     * 
      */
     @WebMethod
     @RequestWrapper(localName = "initializeDatabase", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.InitializeDatabase")
