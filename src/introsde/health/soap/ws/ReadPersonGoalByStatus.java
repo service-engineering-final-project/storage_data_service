@@ -7,17 +7,17 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for updateGoal complex type.
+ * <p>Java class for readPersonGoalByStatus complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="updateGoal">
+ * &lt;complexType name="readPersonGoalByStatus">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long" minOccurs="0"/>
- *         &lt;element name="goal" type="{http://ws.soap.health.introsde/}goal" minOccurs="0"/>
+ *         &lt;element name="status" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -27,14 +27,14 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "updateGoal", propOrder = {
+@XmlType(name = "readPersonGoalByStatus", propOrder = {
     "id",
-    "goal"
+    "status"
 })
-public class UpdateGoal {
+public class ReadPersonGoalByStatus {
 
     protected Long id;
-    protected Goal goal;
+    protected String status;
 
     /**
      * Gets the value of the id property.
@@ -61,27 +61,27 @@ public class UpdateGoal {
     }
 
     /**
-     * Gets the value of the goal property.
+     * Gets the value of the status property.
      * 
      * @return
      *     possible object is
-     *     {@link Goal }
+     *     {@link String }
      *     
      */
-    public Goal getGoal() {
-        return goal;
+    public String getStatus() {
+        return status;
     }
 
     /**
-     * Sets the value of the goal property.
+     * Sets the value of the status property.
      * 
      * @param value
      *     allowed object is
-     *     {@link Goal }
+     *     {@link String }
      *     
      */
-    public void setGoal(Goal value) {
-        this.goal = value;
+    public void setStatus(String value) {
+        this.status = value;
     }
 
 }

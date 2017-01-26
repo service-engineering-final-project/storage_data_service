@@ -59,7 +59,13 @@ public class GoalResource {
 	@Path("/{id}")
 	public Response getGoal(@PathParam("id") Long id) {
 		try {
-			return Response.ok(people.readGoal(id)).build();
+			Goal result = people.readGoal(id);
+			
+			if (result!=null) {
+				return Response.ok(result).build();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
 		} catch(Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}

@@ -211,6 +211,7 @@ public interface People {
     /**
      * 
      * @param goal
+     * @param id
      * @return
      *     returns introsde.health.soap.ws.Goal
      */
@@ -220,12 +221,15 @@ public interface People {
     @ResponseWrapper(localName = "updateGoalResponse", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.UpdateGoalResponse")
     @Action(input = "http://ws.soap.health.introsde/People/updateGoalRequest", output = "http://ws.soap.health.introsde/People/updateGoalResponse")
     public Goal updateGoal(
+        @WebParam(name = "id", targetNamespace = "")
+        Long id,
         @WebParam(name = "goal", targetNamespace = "")
         Goal goal);
 
     /**
      * 
      * @param goal
+     * @param id
      * @return
      *     returns introsde.health.soap.ws.Goal
      */
@@ -235,6 +239,8 @@ public interface People {
     @ResponseWrapper(localName = "createGoalResponse", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.CreateGoalResponse")
     @Action(input = "http://ws.soap.health.introsde/People/createGoalRequest", output = "http://ws.soap.health.introsde/People/createGoalResponse")
     public Goal createGoal(
+        @WebParam(name = "id", targetNamespace = "")
+        Long id,
         @WebParam(name = "goal", targetNamespace = "")
         Goal goal);
 
@@ -300,6 +306,45 @@ public interface People {
         Long id,
         @WebParam(name = "title", targetNamespace = "")
         String title);
+
+    /**
+     * 
+     * @param id
+     * @param status
+     * @return
+     *     returns java.util.List<introsde.health.soap.ws.Goal>
+     */
+    @WebMethod
+    @WebResult(name = "goals", targetNamespace = "")
+    @RequestWrapper(localName = "readPersonGoalByStatus", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.ReadPersonGoalByStatus")
+    @ResponseWrapper(localName = "readPersonGoalByStatusResponse", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.ReadPersonGoalByStatusResponse")
+    @Action(input = "http://ws.soap.health.introsde/People/readPersonGoalByStatusRequest", output = "http://ws.soap.health.introsde/People/readPersonGoalByStatusResponse")
+    public List<Goal> readPersonGoalByStatus(
+        @WebParam(name = "id", targetNamespace = "")
+        Long id,
+        @WebParam(name = "status", targetNamespace = "")
+        String status);
+
+    /**
+     * 
+     * @param id
+     * @param title
+     * @param status
+     * @return
+     *     returns introsde.health.soap.ws.Goal
+     */
+    @WebMethod
+    @WebResult(name = "goal", targetNamespace = "")
+    @RequestWrapper(localName = "readPersonGoalByNameAndStatus", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.ReadPersonGoalByNameAndStatus")
+    @ResponseWrapper(localName = "readPersonGoalByNameAndStatusResponse", targetNamespace = "http://ws.soap.health.introsde/", className = "introsde.health.soap.ws.ReadPersonGoalByNameAndStatusResponse")
+    @Action(input = "http://ws.soap.health.introsde/People/readPersonGoalByNameAndStatusRequest", output = "http://ws.soap.health.introsde/People/readPersonGoalByNameAndStatusResponse")
+    public Goal readPersonGoalByNameAndStatus(
+        @WebParam(name = "id", targetNamespace = "")
+        Long id,
+        @WebParam(name = "title", targetNamespace = "")
+        String title,
+        @WebParam(name = "status", targetNamespace = "")
+        String status);
 
     /**
      * 

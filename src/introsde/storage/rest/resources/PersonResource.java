@@ -1,5 +1,8 @@
 package introsde.storage.rest.resources;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -8,6 +11,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Request;
@@ -63,7 +67,13 @@ public class PersonResource {
 	@Path("/{id}")
 	public Response getPerson(@PathParam("id") Long id) {
 		try {
-			return Response.ok(people.readPerson(id)).build();
+			Person result = people.readPerson(id);
+			
+			if (result!=null) {
+				return Response.ok(result).build();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
 		} catch(Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
@@ -83,7 +93,13 @@ public class PersonResource {
 	public Response updatePerson(Person p, @PathParam("id") int id) {
 		try {
 			p.setId(id);
-			return Response.ok(people.updatePerson(p)).build();
+			
+			if (people.readPerson(Long.valueOf(id))!=null) {
+				Person result = people.updatePerson(p);
+				return Response.ok(result).build();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
 		} catch(Exception e) {
 			System.out.println(e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -101,7 +117,13 @@ public class PersonResource {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response createPerson(Person p) {
 		try {
-			return Response.ok(people.createPerson(p)).build();
+			Person result = people.createPerson(p);
+			
+			if (result!=null) {
+				return Response.status(Response.Status.CREATED).entity(result).build();
+			} else {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			}
 		} catch(Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
@@ -117,8 +139,12 @@ public class PersonResource {
 	@Path("/{id}")
 	public Response deletePerson(@PathParam("id") Long id) {
 		try {
-			people.deletePerson(id);
-			return Response.status(Response.Status.OK).build();
+			if (people.readPerson(id)!=null) {
+				people.deletePerson(id);
+				return Response.status(Response.Status.NO_CONTENT).build();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
 		} catch(Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
@@ -162,7 +188,13 @@ public class PersonResource {
 			@PathParam("mid") Long mid
 	) {
 		try {
-			return Response.ok(people.readPersonMeasure(id, measureType, mid)).build();
+			MeasurementHistory result = people.readPersonMeasure(id, measureType, mid);
+			
+			if (result!=null) {
+				return Response.ok(result).build();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
 		} catch(Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
@@ -187,7 +219,14 @@ public class PersonResource {
 	) {
 		try {
 			m.setMeasure(name);
-			return Response.ok(people.savePersonMeasure(id, m)).build();
+			
+			Measurement result = people.savePersonMeasure(id, m);
+			
+			if (result!=null) {
+				return Response.status(Response.Status.CREATED).entity(result).build();
+			} else {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			}
 		} catch(Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
@@ -215,7 +254,194 @@ public class PersonResource {
 		try {
 			m.setMeasure(name);
 			m.setMid(mid);
-			return Response.ok(people.updatePersonMeasure(id, m)).build();
+			
+			if (people.readPersonMeasure(id, name, Long.valueOf(mid))!=null) {
+				Long result = people.updatePersonMeasure(id, m);
+				String jsonResult = "{\"mid\": " + result + ", \"measure\": \"" + m.getMeasure() + "\"}";
+				return Response.ok(jsonResult).build();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
+		} catch(Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	/***
+	 * A method that gives all the information of a goal identified by {gId} for a particular person {id}.
+	 * @param id: the identifier of the person
+	 * @param gId: the identifier of the goal
+	 * @return the goal identified by {id}
+	 */
+	@GET
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Path("/{id}/goal/{gId}")
+	public Response getPersonGoalById(
+			@PathParam("id") Long id,
+			@PathParam("gId") Long gId) {
+		try {
+			Goal result = people.readPersonGoalById(id, gId);
+			
+			if (people.readGoal(gId)!=null) {
+				if (result!=null) {
+					return Response.ok(result).build();
+				} else {
+					return Response.status(Response.Status.FORBIDDEN).build();
+				}
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
+		} catch(Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	/***
+	 * A method that creates a goal identified by {gId} for a particular person {id}.
+	 * @param id: the identifier of the person
+	 * @return the created goal identified by {id}
+	 */
+	@POST
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Path("/{id}/goal")
+	public Response createPersonGoal(
+			Goal g,
+			@PathParam("id") Long id) {
+		try {
+			Goal result = people.createGoal(id, g);
+			
+			if (result!=null) {
+				return Response.status(Response.Status.CREATED).entity(result).build();
+			} else {
+				return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+			}
+		} catch(Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	/***
+	 * A method that updates the information of a goal identified by {gId} for a particular person {id}.
+	 * @param id: the identifier of the person
+	 * @param gId: the identifier of the goal
+	 * @return the updated goal identified by {id}
+	 */
+	@PUT
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Path("/{id}/goal/{gId}")
+	public Response updatePersonGoal(
+			Goal g,
+			@PathParam("id") Long id,
+			@PathParam("gId") Long gId) {
+		try {
+			g.setId(gId.intValue());
+			
+			if (people.readGoal(gId)!=null) {
+				if (people.readPersonGoalById(id, gId)==null) {
+					Goal result = people.updateGoal(id, g);
+					return Response.ok(result).build();
+				} else {
+					return Response.status(Response.Status.FORBIDDEN).build();
+				}
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
+		} catch(Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	/***
+	 * A method that deletes the goal identified by {id} from the system.
+	 * @param id: the identifier of the person
+	 * @param gId: the identifier of the goal to delete
+	 */
+	@DELETE
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Path("{id}/goal/{gId}")
+	public Response deletePersonGoal(
+			@PathParam("id") Long id,
+			@PathParam("gId") Long gId) {
+		try {
+			if (people.readGoal(gId)!=null) {
+				people.deleteGoal(gId);
+				return Response.status(Response.Status.NO_CONTENT).build();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
+		} catch(Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	/***
+	 * A method that gives all the goals for a particular person {id}.
+	 * @param id: the identifier of the person
+	 * @return the list of goals for the person identified by {id}
+	 */
+	@GET
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Path("/{id}/goal")
+	public Response getPersonGoals(@PathParam("id") Long id) {
+		try {
+			List<Goal> result = people.readPersonGoalList(id);
+			
+			if (result!=null) {
+				return Response.ok(result).build();
+			} else {
+				return Response.status(Response.Status.NOT_FOUND).build();
+			}
+		} catch(Exception e) {
+			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+	
+	/***
+	 * A method that gives all the information of a goal identified by {title} for a particular person {id}.
+	 * @param id: the identifier of the person
+	 * @param title: the title of the goal
+	 * @return the goal identified by {title}
+	 */
+	@GET
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Path("/{id}/goal/find")
+	public Response getPersonGoalFiltered(
+			@PathParam("id") Long id,
+			@QueryParam("title") String title,
+			@QueryParam("status") String status) {
+		try {
+			List<Goal> result = new ArrayList<Goal>();
+			
+			if ((title!=null)&&(status!=null)) {
+				result.add(people.readPersonGoalByNameAndStatus(id, title, status));
+				if (result.get(0)!=null) {
+					return Response.ok(result.get(0)).build();
+				} else {
+					return Response.status(Response.Status.NOT_FOUND).build();
+				}
+			} else {
+				if ((title!=null)&&(status==null)) {
+					result.add(people.readPersonGoalByName(id, title));
+					if (result.get(0)!=null) {
+						return Response.ok(result.get(0)).build();
+					} else {
+						return Response.status(Response.Status.NOT_FOUND).build();
+					}
+				} else if ((title==null)&&(status!=null)) {
+					result = people.readPersonGoalByStatus(id, status);
+					if (result!=null) {
+						return Response.ok(result).build();
+					} else {
+						return Response.status(Response.Status.NOT_FOUND).build();
+					}
+				} else {
+					result = people.readPersonGoalList(id);
+					return Response.ok(result).build();
+				}
+			}
 		} catch(Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
