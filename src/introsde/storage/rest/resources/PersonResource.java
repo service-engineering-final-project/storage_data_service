@@ -73,16 +73,19 @@ public class PersonResource {
 	 * A method that updates the information of a person identified by {id}
 	 * (i.e. only the person's information, not the measures of the health profile).
 	 * @param p: the person to update
+	 * @param id: the identifier of the person to update
 	 * @return the person updated
 	 */
-	@POST
+	@PUT
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/{id}")
-	public Response updatePerson(@PathParam("person") Person p) {
+	public Response updatePerson(Person p, @PathParam("id") int id) {
 		try {
+			p.setId(id);
 			return Response.ok(people.updatePerson(p)).build();
 		} catch(Exception e) {
+			System.out.println(e);
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
 		}
 	}
@@ -93,10 +96,10 @@ public class PersonResource {
 	 * @param p: the person to create
 	 * @return the person created
 	 */
-	@PUT
+	@POST
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response createPerson(@PathParam("person") Person p) {
+	public Response createPerson(Person p) {
 		try {
 			return Response.ok(people.createPerson(p)).build();
 		} catch(Exception e) {
@@ -168,19 +171,22 @@ public class PersonResource {
 	/***
 	 * A method that saves a new measure object {m} (e.g. weight)
 	 * for a person identified by {id} and archives the old value in the history.
-	 * @param id: the identifier of the person
 	 * @param m: the measurement of interest
+	 * @param id: the identifier of the person
+	 * @param name: the name of the measure of interest
 	 * @return the saved measurement
 	 */
-	@PUT
+	@POST
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Path("/{id}/{measure_type}")
 	public Response savePersonMeasure(
+			Measurement m,
 			@PathParam("id") Long id,
-			@PathParam("measure_type") Measurement m
+			@PathParam("measure_type") String name
 	) {
 		try {
+			m.setMeasure(name);
 			return Response.ok(people.savePersonMeasure(id, m)).build();
 		} catch(Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
@@ -190,19 +196,25 @@ public class PersonResource {
 	/***
 	 * A method that updates the measure (e.g. weight) identified
 	 * with {m.mid} for a person identified by {id}.
-	 * @param id: the identifier of the person
 	 * @param m: the measurement history of interest
+	 * @param id: the identifier of the person
+	 * @param mid: the identifier of the measurement
+	 * @param name: the name of the measure of interest
 	 * @return the saved measurement
 	 */
-	@POST
+	@PUT
 	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	@Path("/{id}/{measure_type}")
+	@Path("/{id}/{measure_type}/{mid}")
 	public Response updatePersonMeasure(
+			MeasurementHistory m,
 			@PathParam("id") Long id,
-			@PathParam("measure_type") MeasurementHistory m
+			@PathParam("mid") int mid,
+			@PathParam("measure_type") String name
 	) {
 		try {
+			m.setMeasure(name);
+			m.setMid(mid);
 			return Response.ok(people.updatePersonMeasure(id, m)).build();
 		} catch(Exception e) {
 			return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
