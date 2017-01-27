@@ -9,8 +9,8 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import introsde.health.soap.ws.People;
-import introsde.health.soap.ws.People_Service;
+import introsde.storage.soap.ws.People;
+import introsde.storage.soap.ws.People_Service;
 
 
 /***
