@@ -20,7 +20,7 @@
        
     <info
         organisation="introsde"
-        module="storage-adapter-service"
+        module="storage-data-service"
         status="integration">
 	</info>
 	
