@@ -339,12 +339,12 @@ public class PersonResource {
 			g.setId(gId.intValue());
 			
 			if (people.readGoal(gId)!=null) {
-				if (people.readPersonGoalById(id, gId)==null) {
+				//if (people.readPersonGoalById(id, gId)==null) {
 					Goal result = people.updateGoal(id, g);
 					return Response.ok(result).build();
-				} else {
-					return Response.status(Response.Status.FORBIDDEN).build();
-				}
+				//} else {
+				//	return Response.status(Response.Status.FORBIDDEN).build();
+				//}
 			} else {
 				return Response.status(Response.Status.NOT_FOUND).build();
 			}
