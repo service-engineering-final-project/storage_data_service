@@ -50,7 +50,7 @@ public class RecipeResource {
 	ObjectMapper mapper = new ObjectMapper();
 	
 	// Definition of some useful constants
-	final String baseUrl = "http://recipe-adapter-service.herokuapp.com/rest/yummly";
+	final String baseUrl = "http://recipe-adapter-service-ar.herokuapp.com/rest/yummly";
 	
 	public RecipeResource() {
 		try {
